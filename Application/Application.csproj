@@ -20,6 +20,11 @@
     </PackageReference>
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +32,7 @@
     <Folder Include="DTOs\" />
     <Folder Include="Validators\" />
     <Folder Include="Services\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 
 </Project>
