@@ -8,10 +8,14 @@ namespace Domain.Entities
 {
     public class Location
     {
-        public int Id { get; set; }
-        public string? City { get; set; }
-        public string? Address { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; } 
+        public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public bool IsIndoor { get; set; }
+        public int Capacity { get; set; }       // total spots
+
+        public ICollection<ActivitySession> Sessions { get; set; } = new List<ActivitySession>();
     }
 }
