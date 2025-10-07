@@ -9,9 +9,9 @@ namespace Domain.Entities
 {
     public class Booking
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public Guid ActivityOccurrenceId { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int ActivityOccurrenceId { get; set; }
         public DateTime BookingTime { get; set; } = DateTime.UtcNow;
         public BookingStatus Status { get; set; } = BookingStatus.Active;
 

@@ -29,7 +29,7 @@ namespace Application.Services
                 Token = token,
                 ExpiresAtUtc = expiresAtUtc,
                 Role = user.Role,
-                Name = user.Name,
+                Name = user.UserName,
                 UserId = user.Id
             };
         }

@@ -8,13 +8,13 @@ namespace Domain.Entities
 {
     public class Activity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public bool IsIndoor { get; set; }
-        public TimeSpan StandardDuration { get; set; } // default duration
-        public decimal Price { get; set; }             // base price
+        public TimeSpan StandardDuration { get; set; } 
+        public decimal Price { get; set; }             
         public string? ImageUrl { get; set; }
 
         // Navigation
