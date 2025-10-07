@@ -8,9 +8,9 @@ namespace Domain.Entities
 {
     public class ActivitySession
     {
-        public Guid Id { get; set; }
-        public Guid ActivityId { get; set; }
-        public Guid LocationId { get; set; }
+        public int Id { get; set; }
+        public int ActivityId { get; set; }
+        public int LocationId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int Capacity { get; set; }         // spots for this occurrence
