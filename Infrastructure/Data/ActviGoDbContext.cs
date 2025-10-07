@@ -13,11 +13,41 @@ namespace Infrastructure.Data
     {
         public ActiviGoDbContext(DbContextOptions<ActiviGoDbContext> options) : base(options) { }
 
-        public DbSet<Activity> Activities { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Location> Locations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ActivitySession> ActivitySessions { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.Category)
+                .WithMany(c => c.Activities)
+                .OnDelete(DeleteBehavior.Restrict); //hinders deletion of connected activities if a category was to be deleted
+
+            modelBuilder.Entity<ActivitySession>()
+                .HasOne(s => s.Activity)
+                .WithMany(a => a.Sessions)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ActivitySession>()
+                .HasOne(s => s.Location)
+                .WithMany(l => l.Sessions)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.User)
+                .WithMany(u => u.Bookings)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.ActivitySession)
+                .WithMany(s => s.Bookings)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

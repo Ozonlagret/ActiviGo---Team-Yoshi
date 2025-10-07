@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int ActivityOccurrenceId { get; set; }
+        public int ActivitySessionId { get; set; }
         public DateTime BookingTime { get; set; } = DateTime.UtcNow;
         public BookingStatus Status { get; set; } = BookingStatus.Active;
 
