@@ -10,12 +10,14 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; }
         public int CategoryId { get; set; }
         public TimeSpan StandardDuration { get; set; } 
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
         public int CancellationCutoffHours { get; set; } = 24;
+        public bool IsActive { get; set; } = true;
+        public bool IsOutdoor { get; set; }
 
         // Navigation
         public Category Category { get; set; } = null!;

@@ -11,10 +11,10 @@ namespace Domain.Entities
         public int Id { get; set; }
         public int ActivityId { get; set; }
         public int LocationId { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime StartUtc { get; set; }
+        public DateTime EndUtc { get; set; }
         public int Capacity { get; set; }         // spots for this occurrence
-        public bool IsCancelled { get; set; } = false;
+        public bool IsCanceled { get; set; } = false;
 
         // Navigation
         public Activity Activity { get; set; } = null!;

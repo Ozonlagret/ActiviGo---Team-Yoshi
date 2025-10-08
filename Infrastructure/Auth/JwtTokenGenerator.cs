@@ -15,7 +15,7 @@ namespace Infrastructure.Auth
 
         public JwtTokenGenerator(IOptions<JwtOptions> options) => _options = options.Value;
 
-        public (string token, DateTime expiresAtUtc) Generate(User user)
+        public (string token, DateTime expiresAtUtc) Generate(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
