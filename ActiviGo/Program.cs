@@ -1,4 +1,5 @@
 using Application;
+using Application.Options;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,35 +16,29 @@ namespace ActiviGo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // Controllers
             builder.Services.AddControllers();
 
-            builder.Services.AddDbContext<ActiviGoDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            // Register layers
+            // Layers
             builder.Services.AddApplication(builder.Configuration);
-            builder.Services.AddInfrastructure();
+            builder.Services.AddInfrastructure(builder.Configuration);
 
-            // JWT bearer validation for incoming requests
-            var jwt = builder.Configuration.GetSection("Jwt");
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
-
+            // JWT Bearer 
+            var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
             builder.Services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new()
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwt["Issuer"],
-                        ValidAudience = jwt["Audience"],
-                        IssuerSigningKey = signingKey,
-                        ClockSkew = TimeSpan.FromMinutes(1)
+                        ValidIssuer = jwtOptions.Issuer,
+                        ValidAudience = jwtOptions.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+                        ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
 
@@ -53,6 +48,7 @@ namespace ActiviGo
                 options.AddPolicy("UserOrAdmin", p => p.RequireRole("User", "Admin"));
             });
 
+            // Swagger + JWT-knapp
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -73,7 +69,6 @@ namespace ActiviGo
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

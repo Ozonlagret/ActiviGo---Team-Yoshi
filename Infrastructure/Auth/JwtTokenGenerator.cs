@@ -9,24 +9,32 @@ using System.Text;
 
 namespace Infrastructure.Auth
 {
-    public class JwtTokenGenerator : IJwtTokenGenerator
+    public sealed class JwtTokenGenerator : IJwtTokenGenerator
     {
         private readonly JwtOptions _options;
-
         public JwtTokenGenerator(IOptions<JwtOptions> options) => _options = options.Value;
 
-        public (string token, DateTime expiresAtUtc) Generate(ApplicationUser user)
+        public (string token, DateTime expiresAtUtc) Generate(
+            int userId,
+            string? email,
+            string? displayName,
+            IEnumerable<string> roles)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, user.Role)
+            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new(JwtRegisteredClaimNames.Email, email ?? string.Empty),
+            new(ClaimTypes.Name, string.IsNullOrWhiteSpace(displayName) ? (email ?? userId.ToString()) : displayName!)
             };
+
+            if (roles != null)
+            {
+                foreach (var r in roles)
+                    claims.Add(new Claim(ClaimTypes.Role, r));
+            }
 
             var expires = DateTime.UtcNow.AddMinutes(_options.ExpirationMinutes);
 
@@ -34,6 +42,7 @@ namespace Infrastructure.Auth
                 issuer: _options.Issuer,
                 audience: _options.Audience,
                 claims: claims,
+                notBefore: DateTime.UtcNow,
                 expires: expires,
                 signingCredentials: creds);
 

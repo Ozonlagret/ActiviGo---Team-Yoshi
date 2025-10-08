@@ -1,10 +1,10 @@
 namespace Application.Options
 {
-    public class JwtOptions
+    public sealed class JwtOptions
     {
-        public string Issuer { get; set; } = null!;
-        public string Audience { get; set; } = null!;
-        public string Key { get; set; } = null!;
-        public int ExpirationMinutes { get; set; } = 60;
+        public string Issuer { get; init; } = string.Empty;
+        public string Audience { get; init; } = string.Empty;
+        public string Key { get; init; } = string.Empty;
+        public int ExpirationMinutes { get; init; } = 60;
     }
 }
