@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Application.DTOs.Requests;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Entities;
-using Application.DTOs.Requests;
 
 namespace Infrastructure.Repositories
 {
@@ -17,7 +18,7 @@ namespace Infrastructure.Repositories
         Task<IEnumerable<Activity>> GetByCategoryAsync(int categoryId);
         Task<IEnumerable<Activity>> SearchAsync(string? category, bool? isIndoor);
         Task AddAsync(Activity activity);
-        Task UpdateAsync(Activity activity);
+        void Update(Activity activity);
         Task DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
     }
