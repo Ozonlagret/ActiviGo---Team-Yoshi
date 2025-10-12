@@ -1,12 +1,19 @@
 using Application;
+using Application.Interfaces.Repository;
+using Application.Interfaces.Service;
+using Application.Services;
+using Application.Mapping;
+using AutoMapper;
 using Application.Options;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Infrastructure.Repositories;
 
 namespace ActiviGo
 {
@@ -67,7 +74,12 @@ namespace ActiviGo
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, Array.Empty<string>() } });
             });
 
-            var app = builder.Build();
+            builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+            builder.Services.AddScoped<IActivityService, ActivityService>();
+
+            builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapperProfiles>(); });
+
+            var app = builder.Build();            
 
             if (app.Environment.IsDevelopment())
             {
