@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces.Repository;
 
 namespace Infrastructure.Repositories
 {
-    internal class ActivityRepository : IActivityRepository
+    public class ActivityRepository : IActivityRepository
     {
         private readonly ActiviGoDbContext _context;
 

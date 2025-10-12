@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Interfaces
+namespace Application.Interfaces.Service
 {
-    internal class IBookingService
+    internal class IStatisticsService
     {
     }
 }

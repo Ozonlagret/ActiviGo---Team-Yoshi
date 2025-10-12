@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Interfaces.Repository;
+using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,7 +30,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Locations
                 .Include(l => l.Sessions)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(l => l.Id == id);
         }
 
         public async Task<IEnumerable<Location>> GetAllAsync()

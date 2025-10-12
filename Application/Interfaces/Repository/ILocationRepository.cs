@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Application.Interfaces.Repository
 {
     public interface ILocationRepository
     {
@@ -15,6 +15,7 @@ namespace Infrastructure.Repositories
         Task<IEnumerable<Location>> GetActiveAsync();
         Task<IEnumerable<Location>> GetByTypeAsync(bool isIndoor);
         Task AddAsync(Location location);
+        void Update(Location location);
         Task DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
     }
