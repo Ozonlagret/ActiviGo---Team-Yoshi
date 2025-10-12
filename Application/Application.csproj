@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Validators\" />
     <Folder Include="Options\" />
   </ItemGroup>
