@@ -9,7 +9,7 @@ namespace Domain.Entities.Enums
     public enum BookingStatus
     {
         Active,
-        Cancelled,
+        Canceled,
         Completed
     }
 }
