@@ -76,6 +76,8 @@ namespace ActiviGo
 
             builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
             builder.Services.AddScoped<IActivityService, ActivityService>();
+            builder.Services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
+            builder.Services.AddScoped<ActivitySessionService>();
 
             builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapperProfiles>(); });
 
