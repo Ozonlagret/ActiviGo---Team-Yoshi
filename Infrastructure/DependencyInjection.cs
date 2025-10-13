@@ -1,9 +1,14 @@
 using Application.Interfaces;
+using Application.Interfaces.Repository;
+using Application.Interfaces.Service;
 using Application.Options;
+using Application.Services;
 using Domain.Entities;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Auth;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +38,17 @@ namespace Infrastructure
             // JWT options + token generator
             services.Configure<JwtOptions>(config.GetSection("Jwt"));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+            // Repositories
+            services.AddScoped<IActivityRepository, ActivityRepository>();
+            services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
+
+
+            // Services
+            services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IActivitySessionService, ActivitySessionService>();
+            services.AddScoped<IBookingService, BookingService>();
 
             return services;
         }

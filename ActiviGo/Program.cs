@@ -1,19 +1,23 @@
 using Application;
 using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
-using Application.Services;
 using Application.Mapping;
-using AutoMapper;
 using Application.Options;
+using Application.Services;
+using AutoMapper;
+using Domain.Interfaces.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
-using Infrastructure.Repositories;
 
 namespace ActiviGo
 {
@@ -25,6 +29,10 @@ namespace ActiviGo
 
             // Controllers
             builder.Services.AddControllers();
+
+            // FluentValidation
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining<Application.Validators.CreateActivitySessionRequestValidator>();
 
             // Layers
             builder.Services.AddApplication(builder.Configuration);
@@ -46,6 +54,7 @@ namespace ActiviGo
                         ValidAudience = jwtOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
                         ClockSkew = TimeSpan.FromMinutes(1),
+                        NameClaimType = ClaimTypes.NameIdentifier // viktigt för GetUserId()
                     };
                 });
 
@@ -73,11 +82,6 @@ namespace ActiviGo
                 c.AddSecurityDefinition("Bearer", scheme);
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, Array.Empty<string>() } });
             });
-
-            builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
-            builder.Services.AddScoped<IActivityService, ActivityService>();
-            builder.Services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
-            builder.Services.AddScoped<ActivitySessionService>();
 
             builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapperProfiles>(); });
 
