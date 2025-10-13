@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,12 @@ namespace Application.Interfaces.Repository
             int? categoryId,
             bool? isIndoor,
             int? locationId);
-        Task<IEnumerable<ActivitySession>> GetUpcomingSessionsAsync();
-        Task<int> GetAvailableSpotsAsync(int sessionId);
+        Task<IEnumerable<ActivitySession>> GetUpcomingSessionsAsync(
+            UpcomingRange range,
+            string? activityName = null);
+        Task<ActivitySession?> GetSessionWithBookingsAsync(int sessionId);
         Task AddAsync(ActivitySession session);
-        Task UpdateAsync(ActivitySession session);
+        void Update(ActivitySession session);
         Task DeleteAsync(int id);
     }
 }
