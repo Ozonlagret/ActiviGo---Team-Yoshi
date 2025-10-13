@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Service
 {
-    internal class IActivitySessionService
+    public interface IActivitySessionService
     {
+        Task<int> GetAvailableSpotsAsync(int sessionId);
     }
 }

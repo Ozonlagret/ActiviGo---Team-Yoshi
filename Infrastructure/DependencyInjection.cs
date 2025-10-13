@@ -13,7 +13,7 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        // Anropa denna från Program.cs: services.AddInfrastructure(builder.Configuration)
+        // Anropa denna frï¿½n Program.cs: services.AddInfrastructure(builder.Configuration)
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<ActiviGoDbContext>(opt =>
@@ -37,7 +37,7 @@ namespace Infrastructure
             return services;
         }
 
-        // Behåll en parameterlös overload om andra projekt redan kallar den
+        // Behï¿½ll en parameterlï¿½s overload om andra projekt redan kallar den
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
             => throw new InvalidOperationException("Call AddInfrastructure(IConfiguration) instead.");
     }
