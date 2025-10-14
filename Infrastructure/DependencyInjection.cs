@@ -8,7 +8,6 @@ using Domain.Interfaces.Repositories;
 using Infrastructure.Auth;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
