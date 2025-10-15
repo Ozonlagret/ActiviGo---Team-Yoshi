@@ -39,7 +39,5 @@
 
   <ItemGroup>
     <Folder Include="Mappings\" />
-    <Folder Include="Responses\" />
-    <Folder Include="Requests\" />
   </ItemGroup>
 </Project>
