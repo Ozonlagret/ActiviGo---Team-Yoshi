@@ -3,7 +3,6 @@ using Application.DTOs.Responses;
 using Application.Interfaces.Service;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
