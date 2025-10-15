@@ -34,5 +34,28 @@ namespace Application.Services
             var activity = await _repository.GetByIdAsync(id);
             return activity == null ? null : _mapper.Map<GetActivityDto>(activity);
         }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _repository.ExistsAsync(id);
+        }
+
+        public async Task<IEnumerable<GetActivityDto>> GetAllActiveAsync()
+        {
+            var activities = await _repository.GetAllActiveAsync();
+            return _mapper.Map<IEnumerable<GetActivityDto>>(activities);
+        }
+
+        public async Task<IEnumerable<GetActivityDto>> GetByCategoryAsync(int categoryId)
+        {
+            var activities = await _repository.GetByCategoryAsync(categoryId);
+            return _mapper.Map<IEnumerable<GetActivityDto>>(activities);
+        }
+
+        public async Task<IEnumerable<GetActivityDto>> SearchAsync(string? category, bool? isIndoor)
+        {
+            var activities = await _repository.SearchAsync(category, isIndoor);
+            return _mapper.Map<IEnumerable<GetActivityDto>>(activities);
+        }
     }
 }

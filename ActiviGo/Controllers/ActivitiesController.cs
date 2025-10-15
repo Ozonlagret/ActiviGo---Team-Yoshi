@@ -22,11 +22,40 @@ namespace ActiviGo.Controllers
             return Ok(activities);
         }
 
-        [HttpGet]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<GetActivityDto>> GetById(int id)
         {
             var activity = await _activityService.GetByIdAsync(id);
+            if (activity == null) return NotFound();
             return Ok(activity);
+        }
+
+        [HttpGet("{id:int}/exists")]
+        public async Task<ActionResult<bool>> Exists(int id)
+        {
+            var exists = await _activityService.ExistsAsync(id);
+            return Ok(exists);
+        }
+
+        [HttpGet("active")]
+        public async Task<ActionResult<IEnumerable<GetActivityDto>>> GetActive()
+        {
+            var activities = await _activityService.GetAllActiveAsync();
+            return Ok(activities);
+        }
+
+        [HttpGet("category/{categoryId:int}")]
+        public async Task<ActionResult<IEnumerable<GetActivityDto>>> GetByCategory(int categoryId)
+        {
+            var activities = await _activityService.GetByCategoryAsync(categoryId);
+            return Ok(activities);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<GetActivityDto>>> Search([FromQuery] string? category, [FromQuery] bool? isIndoor)
+        {
+            var activities = await _activityService.SearchAsync(category, isIndoor);
+            return Ok(activities);
         }
     }
 }

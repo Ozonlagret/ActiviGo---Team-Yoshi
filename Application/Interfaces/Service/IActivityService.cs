@@ -10,6 +10,10 @@ namespace Application.Interfaces.Service
     public interface IActivityService
     {
         Task<IEnumerable<GetActivityDto>> GetAllAsync();
-        Task<GetActivityDto> GetByIdAsync(int id);
+        Task<GetActivityDto?> GetByIdAsync(int id);
+        Task<bool> ExistsAsync(int id);
+        Task<IEnumerable<GetActivityDto>> GetAllActiveAsync();
+        Task<IEnumerable<GetActivityDto>> GetByCategoryAsync(int categoryId);
+        Task<IEnumerable<GetActivityDto>> SearchAsync(string? category, bool? isIndoor);
     }
 }
