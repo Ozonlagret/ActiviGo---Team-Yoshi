@@ -17,22 +17,23 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        // Anropa denna från Program.cs services.AddInfrastructure(builder.Configuration)
+        // Anropa från Program.cs: services.AddInfrastructure(builder.Configuration)
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<ActiviGoDbContext>(opt =>
             {
-                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
             // Identity (int-nycklar => IdentityRole<int>)
             services.AddIdentityCore<ApplicationUser>(o =>
             {
                 o.User.RequireUniqueEmail = true;
-                // o.Password.RequiredLength = 6; osv (valfritt)
             })
-            .AddRoles<IdentityRole<int>>()
-            .AddEntityFrameworkStores<ActiviGoDbContext>();
+            .AddRoles<IdentityRole<int>>()                 // RoleManager + rollstöd
+            .AddEntityFrameworkStores<ActiviGoDbContext>() // UserStore/RoleStore
+            .AddSignInManager()                            // behövs för CheckPasswordSignInAsync
+            .AddDefaultTokenProviders();                   // (valfritt) epost/reset tokens
 
             // JWT options + token generator
             services.Configure<JwtOptions>(config.GetSection("Jwt"));
@@ -42,17 +43,18 @@ namespace Infrastructure
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
-
+            services.AddScoped<IIdentityAuthRepository, IdentityAuthRepository>();
 
             // Services
             services.AddScoped<IActivityService, ActivityService>();
             services.AddScoped<IActivitySessionService, ActivitySessionService>();
             services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IAuthService, AuthService>();   
 
             return services;
         }
 
-        // Beh�ll en parameterl�s overload om andra projekt redan kallar den
+        // Behåll en parameterlös overload om andra projekt redan kallar den
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
             => throw new InvalidOperationException("Call AddInfrastructure(IConfiguration) instead.");
     }

@@ -34,7 +34,7 @@ namespace ActiviGo
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<Application.Validators.CreateActivitySessionRequestValidator>();
 
-            // Layers
+            // Layers, Dependency Injection
             builder.Services.AddApplication(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -54,14 +54,16 @@ namespace ActiviGo
                         ValidAudience = jwtOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
                         ClockSkew = TimeSpan.FromMinutes(1),
-                        NameClaimType = ClaimTypes.NameIdentifier // viktigt för GetUserId()
+
+                        NameClaimType = ClaimTypes.NameIdentifier,
+                        RoleClaimType = ClaimTypes.Role
                     };
                 });
 
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
-                options.AddPolicy("UserOrAdmin", p => p.RequireRole("User", "Admin"));
+                options.AddPolicy("MemberOrAdmin", p => p.RequireRole("Member", "Admin"));
             });
 
             // Swagger + JWT-knapp
