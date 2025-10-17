@@ -17,7 +17,7 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        // Anropa denna fr�n Program.cs: services.AddInfrastructure(builder.Configuration)
+        // Anropa denna från Program.cs services.AddInfrastructure(builder.Configuration)
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<ActiviGoDbContext>(opt =>
