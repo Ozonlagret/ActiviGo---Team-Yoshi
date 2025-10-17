@@ -32,7 +32,10 @@ namespace Infrastructure.Repositories
             => (await _signIn.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true)).Succeeded;
 
         public async Task<IList<string>> GetRolesAsync(ApplicationUser user, CancellationToken ct = default)
-            => await _users.GetRolesAsync(user);
+        {
+            var roles = await _users.GetRolesAsync(user);
+            return roles ?? new List<string>(); // aldrig null
+        }
 
         public async Task<bool> EmailExistsAsync(string email, CancellationToken ct = default)
             => await _users.FindByEmailAsync(email) is not null;

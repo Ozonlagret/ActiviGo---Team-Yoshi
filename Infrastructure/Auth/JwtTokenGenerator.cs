@@ -23,12 +23,17 @@ namespace Infrastructure.Auth
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var name = string.IsNullOrWhiteSpace(displayName)
+                ? (email ?? userId.ToString())
+                : displayName!;
+
             var claims = new List<Claim>
-            {
-            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new(JwtRegisteredClaimNames.Email, email ?? string.Empty),
-            new(ClaimTypes.Name, string.IsNullOrWhiteSpace(displayName) ? (email ?? userId.ToString()) : displayName!)
-            };
+        {
+            new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new(ClaimTypes.Email, email ?? string.Empty),
+            new(ClaimTypes.Name, name),
+            new("sub", userId.ToString())
+        };
 
             if (roles != null)
             {
@@ -38,15 +43,17 @@ namespace Infrastructure.Auth
 
             var expires = DateTime.UtcNow.AddMinutes(_options.ExpirationMinutes);
 
-            var token = new JwtSecurityToken(
+            var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
                 audience: _options.Audience,
                 claims: claims,
                 notBefore: DateTime.UtcNow,
                 expires: expires,
-                signingCredentials: creds);
+                signingCredentials: creds
+            );
 
-            return (new JwtSecurityTokenHandler().WriteToken(token), expires);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return (token, expires);
         }
     }
 }
