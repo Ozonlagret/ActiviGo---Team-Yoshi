@@ -16,7 +16,7 @@ namespace Domain.Interfaces.Repositories
         Task<IEnumerable<ActivitySession>> GetByActivityIdAsync(int activityId, CancellationToken ct = default);
         Task<IEnumerable<ActivitySession>> GetByLocationIdAsync(int locationId, CancellationToken ct = default);
 
-        // Sök/filtning – helt OK att ha här för er.
+        // Sök/filtning
         Task<IEnumerable<ActivitySession>> GetAvailableSessionsAsync(
             DateTime? startDate,
             DateTime? endDate,
