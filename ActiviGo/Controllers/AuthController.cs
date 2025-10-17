@@ -1,6 +1,6 @@
+using Application.DTOs.Requests;
+using Application.DTOs.Responses;
 using Application.Interfaces;
-using ActiviGo.Requests;
-using ActiviGo.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,27 +8,41 @@ namespace ActiviGo.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public sealed class AuthController : ControllerBase
     {
         private readonly IAuthService _auth;
 
         public AuthController(IAuthService auth) => _auth = auth;
 
+        // Login, returnerar JWT + enkel user-info
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request, CancellationToken ct)
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest req, CancellationToken ct)
         {
-            var result = await _auth.LoginAsync(request.Email, request.Password, ct);
-            if (result is null) return Unauthorized();
+            var res = await _auth.LoginAsync(req.Email, req.Password, ct);
+            return res is null ? Unauthorized() : Ok(res);
+        }
 
-            return Ok(new AuthResponse
+        // Register, skapar användare och loggar in direkt
+        [AllowAnonymous]
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest req, CancellationToken ct)
+        {
+            var (ok, resp, errors) = await _auth.RegisterAsync(req, ct);
+            if (!ok)
             {
-                Token = result.Token,
-                ExpiresAtUtc = result.ExpiresAtUtc,
-                Role = result.Role,
-                Name = result.Name,
-                UserId = result.UserId
-            });
+                return ValidationProblem(new ValidationProblemDetails(new Dictionary<string, string[]>
+                {
+                    ["register"] = errors.ToArray()
+                }));
+            }
+
+            // 201 Created
+            return CreatedAtAction(nameof(Login), new { email = req.Email }, resp);
         }
     }
 }
