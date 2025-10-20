@@ -38,6 +38,16 @@ namespace ActiviGo
             builder.Services.AddApplication(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
 
+            // CORS
+            const string FrontendCors = "FrontendCors";
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy(FrontendCors, p =>
+                    p.WithOrigins("http://localhost:5173") // Vite dev
+                     .AllowAnyHeader()
+                     .AllowAnyMethod());
+            });
+
             // JWT Bearer 
             var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
             builder.Services
@@ -96,7 +106,7 @@ namespace ActiviGo
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(FrontendCors);
             app.UseAuthentication();
             app.UseAuthorization();
 
