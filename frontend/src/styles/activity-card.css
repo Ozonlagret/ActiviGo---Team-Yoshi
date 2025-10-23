@@ -1,0 +1,91 @@
+:root {
+  --green-bg:        #f6fff8;   /* väldigt ljusgrön bakgrund */
+  --green-card:      #ffffff;   /* kortets bakgrund (vit med grön känsla) */
+  --green-border:    #b7e4c7;   /* ljusgrön kant */
+  --green-img-bg:    #e9f7ef;   /* placeholder-bakgrund */
+  --green-muted:     #3f6247;   /* dämpad grön text */
+  --green-text:      #1f3d2b;   /* primär text (mörk grön) */
+  --green-accent:    #2f855a;   /* accent (länk/hover) */
+  --green-accent-20: #d8f3dc;   
+}
+
+/* Kortet */
+.activity-card {
+  border: 1px solid var(--green-border);
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--green-card);
+  color: var(--green-text);
+  box-shadow: 0 2px 8px rgba(47, 133, 90, 0.06);
+  transition: box-shadow 120ms ease, transform 120ms ease, border-color 120ms ease;
+}
+
+.activity-card:hover {
+  border-color: var(--green-accent);
+  box-shadow: 0 6px 16px rgba(47, 133, 90, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Bildyta */
+.activity-card__imgHolder {
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: var(--green-img-bg);
+}
+
+/* Bild */
+.activity-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Bild-placeholder */
+.activity-card__imgPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--green-muted);
+  font-size: 28px;
+  background: var(--green-img-bg);
+}
+
+/* Rubrik */
+.activity-card__title {
+  margin: 6px 0 4px;
+  font-size: 20px;
+  color: var(--green-text);
+}
+
+/* Dämpad text (plats/kategori) */
+.activity-card__muted {
+  color: var(--green-muted);
+  margin: 0;
+}
+
+/* Beskrivning */
+.activity-card__desc {
+  margin-top: 8px;
+  color: var(--green-text);
+}
+
+/* Länk */
+.activity-card__link {
+  display: inline-block;
+  margin-top: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--green-accent);
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: background-color 120ms ease, text-decoration-color 120ms ease;
+}
+
+.activity-card__link:hover {
+  text-decoration: underline;
+  background: var(--green-accent-20);
+}
