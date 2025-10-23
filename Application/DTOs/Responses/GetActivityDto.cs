@@ -11,11 +11,12 @@ namespace Application.DTOs.Responses
     {
         public int Id { get; set; } 
         public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
         public string Category { get; set; } = string.Empty;
         public TimeSpan StandardDuration { get; set; }
         public decimal Price { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
         public bool IsActive { get; set; }
+        public bool IsOutdoor { get; set; }
     }
 }

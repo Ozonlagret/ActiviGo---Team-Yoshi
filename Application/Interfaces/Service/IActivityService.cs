@@ -1,9 +1,5 @@
 ﻿using Application.DTOs.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Application.DTOs.Requests;
 
 namespace Application.Interfaces.Service
 {
@@ -15,5 +11,11 @@ namespace Application.Interfaces.Service
         Task<IEnumerable<GetActivityDto>> GetAllActiveAsync();
         Task<IEnumerable<GetActivityDto>> GetByCategoryAsync(int categoryId);
         Task<IEnumerable<GetActivityDto>> SearchAsync(string? category, bool? isIndoor);
+
+        //Admin Operations
+        Task<GetActivityDto> CreateAsync(CreateActivityRequest req, CancellationToken ct = default);
+        Task<bool> UpdateAsync(UpdateActivityRequest req, CancellationToken ct = default);
+        Task<bool> DeleteAsync(int id, CancellationToken ct = default);
+        Task<bool> SetActiveAsync(int id, bool isActive, CancellationToken ct = default);
     }
 }
