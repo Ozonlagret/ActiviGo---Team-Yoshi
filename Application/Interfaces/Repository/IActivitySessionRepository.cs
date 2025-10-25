@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.Requests;
+using Application.DTOs.Responses;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,13 @@ namespace Domain.Interfaces.Repositories
         Task<ActivitySession?> GetByIdWithDetailsAsync(int id, CancellationToken ct = default);
 
         Task<IEnumerable<ActivitySession>> GetAllAsync(CancellationToken ct = default);
-        Task<IEnumerable<ActivitySession>> GetByActivityIdAsync(int activityId, CancellationToken ct = default);
-        Task<IEnumerable<ActivitySession>> GetByLocationIdAsync(int locationId, CancellationToken ct = default);
+        //Task<IEnumerable<ActivitySession>> GetByActivityIdAsync(int activityId, CancellationToken ct = default);
+        //Task<IEnumerable<ActivitySession>> GetByLocationIdAsync(int locationId, CancellationToken ct = default);
 
         // Sök/filtning
-        Task<IEnumerable<ActivitySession>> GetAvailableSessionsAsync(
-            DateTime? startDate,
-            DateTime? endDate,
-            int? categoryId,
-            bool? isIndoor,
-            int? locationId,
-            CancellationToken ct = default);
+        Task<IEnumerable<ActivitySession>> FilterAvailableSessionsAsync(
+        FilterSessionsRequest request,
+        CancellationToken ct = default);
 
         Task<ActivitySession?> GetSessionWithBookingsAsync(int sessionId, CancellationToken ct = default);
 
