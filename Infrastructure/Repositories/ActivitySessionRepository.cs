@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.Requests;
+using Domain.Entities;
 using Domain.Entities.Enums;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
@@ -29,19 +30,20 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<ActivitySession>> GetAllAsync(CancellationToken ct = default)
             => await _db.ActivitySessions.AsNoTracking().ToListAsync(ct);
 
-        public async Task<IEnumerable<ActivitySession>> GetByActivityIdAsync(int activityId, CancellationToken ct = default)
-            => await _db.ActivitySessions
-                .Where(s => s.ActivityId == activityId)
-                .AsNoTracking()
-                .ToListAsync(ct);
+        // Redundant methods considering the one below
+        //public async Task<IEnumerable<ActivitySession>> GetByActivityIdAsync(int activityId, CancellationToken ct = default)
+        //    => await _db.ActivitySessions
+        //        .Where(s => s.ActivityId == activityId)
+        //        .AsNoTracking()
+        //        .ToListAsync(ct);
 
-        public async Task<IEnumerable<ActivitySession>> GetByLocationIdAsync(int locationId, CancellationToken ct = default)
-            => await _db.ActivitySessions
-                .Where(s => s.LocationId == locationId)
-                .AsNoTracking()
-                .ToListAsync(ct);
+        //public async Task<IEnumerable<ActivitySession>> GetByLocationIdAsync(int locationId, CancellationToken ct = default)
+        //    => await _db.ActivitySessions
+        //        .Where(s => s.LocationId == locationId)
+        //        .AsNoTracking()
+        //        .ToListAsync(ct);
 
-        public async Task<IEnumerable<ActivitySession>> GetAvailableSessionsAsync(
+        public async Task<IEnumerable<ActivitySession>> FilterAvailableSessionsAsync(
             DateTime? startDate,
             DateTime? endDate,
             int? categoryId,
