@@ -20,8 +20,12 @@ namespace Domain.Interfaces.Repositories
 
         // Sök/filtning
         Task<IEnumerable<ActivitySession>> FilterAvailableSessionsAsync(
-        FilterSessionsRequest request,
-        CancellationToken ct = default);
+                DateTime? startDate,
+                DateTime? endDate,
+                int? categoryId,
+                bool? isIndoor,
+                int? locationId,
+                CancellationToken ct = default);
 
         Task<ActivitySession?> GetSessionWithBookingsAsync(int sessionId, CancellationToken ct = default);
 
