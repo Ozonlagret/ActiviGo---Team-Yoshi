@@ -1,6 +1,8 @@
 ﻿using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces.Service;
+using Application.Interfaces.Repository;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +17,12 @@ namespace Application.Services
     public class ActivitySessionService : IActivitySessionService
     {
         private readonly IActivitySessionRepository _sessions;
+        private readonly IMapper _mapper;
 
-        public ActivitySessionService(IActivitySessionRepository sessions)
-            => _sessions = sessions;
+        public ActivitySessionService(IActivitySessionRepository sessions, IMapper mapper)
+        {   _sessions = sessions;
+            _mapper = mapper;
+        }
 
         public async Task<ActivitySessionResponse> CreateAsync(CreateActivitySessionRequest req, CancellationToken ct)
         {
@@ -49,6 +54,35 @@ namespace Application.Services
                 entity.IsCanceled,
                 0 // valfri antal bokningar vid skapandet
             );
+        }
+
+        public async Task<IEnumerable<ActivitySessionResponse>> GetAllAsync()
+        {
+            var activities = await _sessions.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<ActivitySessionResponse>>(activities);
+        }
+
+        public async Task<IEnumerable<ActivitySessionResponse>> FilterAvailableSessionsAsync(
+        FilterSessionsRequest request,
+        CancellationToken ct = default)
+        {
+            var sessions = await _sessions.FilterAvailableSessionsAsync(
+                request.StartDate,
+                request.EndDate,
+                request.CategoryId,
+                request.IsIndoor,
+                request.LocationId,
+                ct);
+
+            return _mapper.Map<IEnumerable<ActivitySessionResponse>>(sessions);
+        }
+
+
+        public async Task<ActivitySessionResponse> GetByIdAsync(int id)
+        {
+            var activitySession = await _sessions.GetByIdAsync(id);
+            return activitySession == null ? null : _mapper.Map<ActivitySessionResponse>(activitySession);
         }
     }
 }
