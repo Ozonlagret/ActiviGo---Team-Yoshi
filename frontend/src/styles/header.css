@@ -1,0 +1,100 @@
+:root {
+  --green-dark: #1b4332;   /* mörkgrön bakgrund */
+  --green-dark-hover: #163b29;
+  --green-accent: #95d5b2; 
+  --green-border: #2d6a4f;
+  --white: #ffffff;
+}
+
+/* Header */
+.ag-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--green-dark);
+  border-bottom: 1px solid var(--green-border);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Inre layout */
+.ag-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Logga */
+.ag-brand {
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--white);       
+  letter-spacing: 0.5px;
+}
+
+/* Navigation */
+.ag-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.ag-nav__link {
+  color: var(--white);       
+  text-decoration: none;
+  opacity: 0.85;
+  font-weight: 500;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.ag-nav__link:hover {
+  opacity: 1;
+  color: var(--green-accent);  /* ljusgrön vid hover */
+}
+
+/* Auth-knap */
+.ag-auth {
+  margin-left: 12px;
+}
+
+.ag-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, filter 0.2s ease;
+}
+
+.ag-btn--dark {
+  background: var(--green-accent);
+  color: var(--green-dark);  
+}
+
+.ag-btn--dark:hover {
+  background: #74c69d;    
+  color: var(--green-dark);
+}
+
+.ag-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.ag-btn--dark {
+  background: #374151;
+  color: #fff;
+}
+.ag-btn--dark:hover {
+  filter: brightness(0.95);
+}
