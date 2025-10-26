@@ -12,6 +12,6 @@ namespace Application.Interfaces.Service
     public interface IActivitySessionService
     {
         Task<ActivitySessionResponse> CreateAsync(CreateActivitySessionRequest req, CancellationToken ct = default);
-        Task<IEnumerable<ActivitySessionResponse>> FilterAvailableSessionsAsync(FilterSessionsRequest dto, CancellationToken ct);
+        Task<IEnumerable<FilterActivitySessionResponse>> FilterAvailableSessionsAsync(FilterSessionsRequest dto, CancellationToken ct);
     }
 }
