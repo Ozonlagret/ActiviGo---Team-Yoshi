@@ -9,7 +9,10 @@ namespace Application.DTOs.Responses
     public sealed record BookingResponse(
     int Id,
     int ActivitySessionId,
+    string ActivityName,
     DateTime BookingTimeUtc,
-    string Status
+    string Status,
+    string StartDateUtc,
+    string EndDateUtc
     );
 }
