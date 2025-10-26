@@ -23,7 +23,7 @@ namespace ActiviGo
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -97,10 +97,35 @@ namespace ActiviGo
 
             builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapperProfiles>(); });
 
-            var app = builder.Build();            
+            var app = builder.Build();
 
+            // Seed data in development
             if (app.Environment.IsDevelopment())
             {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetRequiredService<ActiviGoDbContext>();
+                    var userManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<Domain.Entities.ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole<int>>>();
+
+                    // Ensure database is created
+                    context.Database.EnsureCreated();
+
+                    // Check if already seeded (e.g., if Categories exist)
+                    if (!context.Categories.Any())
+                    {
+                        // Create roles first
+                        if (!await roleManager.RoleExistsAsync("Admin"))
+                            await roleManager.CreateAsync(new Microsoft.AspNetCore.Identity.IdentityRole<int>("Admin"));
+                        if (!await roleManager.RoleExistsAsync("User"))
+                            await roleManager.CreateAsync(new Microsoft.AspNetCore.Identity.IdentityRole<int>("User"));
+
+                        // Seed data
+                        await SeedData.InitializeAsync(context, userManager, roleManager);
+                    }
+                }
+
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
