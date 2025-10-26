@@ -47,6 +47,7 @@ namespace Application.Services
             return new ActivitySessionResponse(
                 entity.Id,
                 entity.ActivityId,
+                
                 entity.LocationId,
                 entity.StartUtc,
                 entity.EndUtc,
@@ -63,7 +64,7 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<ActivitySessionResponse>>(activities);
         }
 
-        public async Task<IEnumerable<ActivitySessionResponse>> FilterAvailableSessionsAsync(
+        public async Task<IEnumerable<FilterActivitySessionResponse>> FilterAvailableSessionsAsync(
         FilterSessionsRequest request,
         CancellationToken ct = default)
         {
@@ -75,7 +76,7 @@ namespace Application.Services
                 request.LocationId,
                 ct);
 
-            return _mapper.Map<IEnumerable<ActivitySessionResponse>>(sessions);
+            return _mapper.Map<IEnumerable<FilterActivitySessionResponse>>(sessions);
         }
 
 
