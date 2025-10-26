@@ -1,0 +1,28 @@
+/* Wrapper för sidans innehåll under searchbaren */
+.explore {
+  padding: 0 18px 24px;
+}
+
+/* Enkla statusytor som följer maxbredden */
+.explore__loading,
+.explore__empty {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Grid för kort: 3 kolumner på desktop, faller ner på 2/1 i mindre bredd */
+.explore__grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .explore__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .explore__grid { grid-template-columns: 1fr; }
+}
