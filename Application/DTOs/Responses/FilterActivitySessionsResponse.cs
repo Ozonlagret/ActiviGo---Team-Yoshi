@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Responses
 {
-    public record FilterActivitySessionResponse(
-    int Id,
-    int ActivityId,
-    string ActivityName,
-    int LocationId,
-    DateTime StartUtc,
-    DateTime EndUtc,
-    int Capacity,
-    bool IsCanceled,
-    int BookedCount
-    );
+    public class FilterActivitySessionResponse
+    {
+        public int Id { get; set; }
+        public string? ActivityName { get; set; }
+        public string? LocationName { get; set; }
+        public string? CategoryName { get; set; }
+        public string? Description { get; set; }
+        public DateTime StartUtc { get; set; }
+        public DateTime EndUtc { get; set; }
+        public int Capacity { get; set; }
+        public bool IsCanceled { get; set; }
+        public string? ImageUrl { get; set; }
+    }
 }
