@@ -15,6 +15,13 @@ namespace Application.Mapping
         {
             CreateMap<Activity, GetActivityDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+
+            CreateMap<ActivitySession, FilterActivitySessionResponse>()
+                .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.Activity.Name))
+                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Activity.Category.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Activity.Description))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Activity.ImageUrl));
         }
     }
 }
