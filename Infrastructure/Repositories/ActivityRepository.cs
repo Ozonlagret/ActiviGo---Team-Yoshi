@@ -80,18 +80,23 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(Activity activity)
         {
             await _context.Activities.AddAsync(activity);
+            await _context.SaveChangesAsync();
         }
 
         public void Update(Activity activity)
         {
             _context.Activities.Update(activity);
+            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(int id)
         {
             var activity = await _context.Activities.FindAsync(id);
             if (activity != null)
+            {
                 _context.Activities.Remove(activity);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> ExistsAsync(int id)
