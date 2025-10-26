@@ -34,3 +34,8 @@ export async function listLocations() {
   const { data } = await api.get<Array<{ id:number; name:string }>>("/locations");
   return data;
 }
+
+export async function getActivity(id: number) {
+  const { data } = await api.get<Activity>(`/activities/${id}`);
+  return data;
+}
