@@ -53,6 +53,7 @@ namespace Infrastructure.Repositories
         {
             var q = _db.ActivitySessions
                 .Include(s => s.Activity)
+                    .ThenInclude(a => a.Category)
                 .Include(s => s.Location)
                 .Where(s => !s.IsCanceled)
                 .AsQueryable();
