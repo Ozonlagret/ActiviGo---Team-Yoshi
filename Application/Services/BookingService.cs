@@ -54,8 +54,11 @@ namespace Application.Services
             return new BookingResponse(
                 entity.Id,
                 entity.ActivitySessionId,
+                session.Activity.Name,
                 entity.BookingTimeUtc,
-                entity.Status.ToString()
+                entity.Status.ToString(),
+                session.StartUtc.ToString("o"),
+                session.EndUtc.ToString("o")
             );
         }
 
@@ -81,18 +84,43 @@ namespace Application.Services
 
         public async Task<MyBookingsResponse> GetMyAsync(int userId, CancellationToken ct)
         {
-            var now = DateTime.UtcNow;
-
             var upcoming = await _bookings.GetUserUpcomingBookingsAsync(userId, ct);
             var past = await _bookings.GetUserPastBookingsAsync(userId, ct);
             var all = await _bookings.GetByUserIdAsync(userId, ct);
             var canceled = all.Where(b => b.Status == BookingStatus.Canceled);
 
-            return new MyBookingsResponse(
-                upcoming.Select(x => new BookingResponse(x.Id, x.ActivitySessionId, x.BookingTimeUtc, "Active")),
-                past.Select(x => new BookingResponse(x.Id, x.ActivitySessionId, x.BookingTimeUtc, "Completed")),
-                canceled.Select(x => new BookingResponse(x.Id, x.ActivitySessionId, x.BookingTimeUtc, "Canceled"))
-            );
+            var upcomingDtos = upcoming.Select(x => new BookingResponse(
+                x.Id,
+                x.ActivitySessionId,
+                x.ActivitySession.Activity.Name,
+                x.BookingTimeUtc,
+                x.Status.ToString(),
+                x.ActivitySession.StartUtc.ToString("o"),
+                x.ActivitySession.EndUtc.ToString("o")
+            )).ToList();
+
+            var pastDtos = past.Select(x => new BookingResponse(
+                x.Id,
+                x.ActivitySessionId,
+                x.ActivitySession.Activity.Name,
+                x.BookingTimeUtc,
+                x.Status.ToString(),
+                x.ActivitySession.StartUtc.ToString("o"),
+                x.ActivitySession.EndUtc.ToString("o")
+            )).ToList();
+
+            var canceledDtos = canceled.Select(x => new BookingResponse(
+                x.Id,
+                x.ActivitySessionId,
+                x.ActivitySession.Activity.Name,
+                x.BookingTimeUtc,
+                x.Status.ToString(),
+                x.ActivitySession.StartUtc.ToString("o"),
+                x.ActivitySession.EndUtc.ToString("o")
+            )).ToList();
+
+            return new MyBookingsResponse(upcomingDtos, pastDtos, canceledDtos);
         }
+
     }
 }
