@@ -30,6 +30,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Booking>> GetByUserIdAsync(int userId, CancellationToken ct = default)
             => await _db.Bookings
                 .Include(b => b.ActivitySession)
+                    .ThenInclude(s => s.Activity)
                 .Where(b => b.UserId == userId)
                 .AsNoTracking()
                 .ToListAsync(ct);
@@ -37,6 +38,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Booking>> GetUserUpcomingBookingsAsync(int userId, CancellationToken ct = default)
             => await _db.Bookings
                 .Include(b => b.ActivitySession)
+                    .ThenInclude(s => s.Activity)
                 .Where(b => b.UserId == userId
                          && b.Status == BookingStatus.Active
                          && b.ActivitySession.EndUtc > DateTime.UtcNow)
@@ -46,6 +48,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Booking>> GetUserPastBookingsAsync(int userId, CancellationToken ct = default)
             => await _db.Bookings
                 .Include(b => b.ActivitySession)
+                    .ThenInclude(s => s.Activity)
                 .Where(b => b.UserId == userId
                          && b.Status == BookingStatus.Active
                          && b.ActivitySession.EndUtc <= DateTime.UtcNow)

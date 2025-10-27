@@ -21,16 +21,16 @@ export type Location = {
 };
 
 export type FilterActivitySessionResponse = {
-  sessionId?: number;
-  name?: string;
-  location?: string;
-  category?: string;
+  id: number;
+  activityName?: string;
+  locationName?: string;
+  categoryName?: string;
   description?: string;
   startUtc?: string;
   endUtc?: string;
   imageUrl?: string;
   capacity?: number;
-  IsCanceled?: boolean;
+  isCanceled?: boolean;
 };
 
 export type Activity = {

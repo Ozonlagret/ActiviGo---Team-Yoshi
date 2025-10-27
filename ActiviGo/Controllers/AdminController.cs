@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ActiviGo.Controllers
 {
     [ApiController]
-    [Route("api/admin")]
+    [Route("api/[controller]")]
     // [Authorize(Roles = "Admin")]  // TODO: Uncomment after testing
     public class AdminController : ControllerBase
     {

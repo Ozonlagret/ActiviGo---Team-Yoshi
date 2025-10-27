@@ -11,7 +11,8 @@ export type ListParams = {
 };
 
 export async function listActivitySessions(params: ListParams = {}) {
-  const { data } = await api.get<ActivitySession[]>("/activities", { params });
+  // Note: backend exposes sessions via POST filter; this GET maps to activities endpoint
+  const { data } = await api.get<ActivitySession[]>("/api/activities", { params });
   return data;
 }
 

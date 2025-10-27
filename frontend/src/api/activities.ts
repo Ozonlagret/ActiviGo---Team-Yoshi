@@ -22,21 +22,21 @@ export type ListParams = {
 };
 
 export async function listActivities(params: ListParams = {}) {
-  const { data } = await api.get<Activity[]>("/activities", { params });
+  const { data } = await api.get<Activity[]>("/api/activities", { params });
   return data;
 }
 
 export async function fetchActivitySessions(filterParams = {}) {
-  const { data } = await api.post<ActivitySession[]>("/activitySessions/filter", filterParams);
+  const { data } = await api.post<ActivitySession[]>("/api/activitySessions/filter", filterParams);
   return data;
 }
 
 export async function listCategories() {
-  const { data } = await api.get<Array<{ id:number; name:string }>>("/categories");
+  const { data } = await api.get<Array<{ id:number; name:string }>>("/api/categories");
   return data;
 }
 
 export async function listLocations() {
-  const { data } = await api.get<Array<{ id:number; name:string }>>("/locations");
+  const { data } = await api.get<Array<{ id:number; name:string }>>("/api/locations");
   return data;
 }

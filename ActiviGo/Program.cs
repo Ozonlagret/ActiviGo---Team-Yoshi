@@ -43,7 +43,12 @@ namespace ActiviGo
             builder.Services.AddCors(opts =>
             {
                 opts.AddPolicy(FrontendCors, p =>
-                    p.WithOrigins("http://localhost:5173") // Vite dev
+                    p.WithOrigins(
+                         "http://localhost:5173",
+                         "https://localhost:5173",
+                         "http://localhost:5174",
+                         "https://localhost:5174"
+                     ) // Vite dev (http/https on 5173/5174)
                      .AllowAnyHeader()
                      .AllowAnyMethod());
             });

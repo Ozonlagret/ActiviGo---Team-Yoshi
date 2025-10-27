@@ -1,9 +1,28 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import ActivitySessionFilterPage from "./components/ActivitySessionFilterPage.tsx";
 import CreateEntity from "./components/admin/CreateEntity.tsx";
+import AuthPage from "./components/AuthPage.tsx";
+import { getAuthInfo, logout } from "./api/auth.ts";
+import MyBookings from "./components/MyBookings.tsx";
 
 export default function App() {
-  const isAdmin = true; // TODO: Replace with actual auth check
+  const [auth, setAuth] = useState(() => getAuthInfo());
+
+  useEffect(() => {
+    const onAuthChanged = () => setAuth(getAuthInfo());
+    const onStorage = (e: StorageEvent) => {
+      if (["access_token", "user_role", "user_name"].includes(e.key || "")) setAuth(getAuthInfo());
+    };
+    window.addEventListener("auth:changed", onAuthChanged as EventListener);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("auth:changed", onAuthChanged as EventListener);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+
+  const isAdmin = auth.role === "Admin";
 
   return (
     <BrowserRouter>
@@ -19,11 +38,21 @@ export default function App() {
           <div style={{ display: "flex", gap: "2rem" }}>
             <Link to="/">Hem</Link>
             <Link to="/activities">Aktiviteter</Link>
+            {isAdmin && <Link to="/admin">Admin</Link>}
+            {auth.loggedIn && <Link to="/bookings">Mina bokningar</Link>}
           </div>
-          
-          {isAdmin && (
-            <Link to="/admin">Admin</Link>
-          )}
+
+          {/* Right-aligned auth actions */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            {auth.loggedIn && auth.name && (
+              <span style={{ color: "#444" }}>Hej, {auth.name}</span>
+            )}
+            {auth.loggedIn ? (
+              <LogoutButton />
+            ) : (
+              <Link to="/auth">Logga in / Registrera</Link>
+            )}
+          </div>
         </nav>
 
         {/* Main Content */}
@@ -31,7 +60,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/activities" element={<ActivitiesPage />} />
-            {isAdmin && (<Route path="/admin/*" element={<AdminPage />} />)}
+            <Route path="/admin/*" element={<RequireAdmin isAdmin={isAdmin}><AdminPage /></RequireAdmin>} />
+            <Route path="/bookings" element={<RequireAuth loggedIn={auth.loggedIn}><MyBookings /></RequireAuth>} />
+            <Route path="/auth" element={<AuthPage />} />
           </Routes>
         </main>
       </div>
@@ -71,6 +102,26 @@ function AdminPage() {
       </Routes>
     </div>
   );
+}
+
+function LogoutButton() {
+  const nav = useNavigate();
+  return (
+    <button
+      onClick={() => { logout(); nav("/", { replace: true }); }}
+      style={{ background: "transparent", border: "1px solid #aaa", padding: "6px 12px", borderRadius: 6, cursor: "pointer" }}
+    >Logga ut</button>
+  );
+}
+
+function RequireAdmin({ isAdmin, children }: { isAdmin: boolean; children: React.ReactNode }) {
+  if (!isAdmin) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
+}
+
+function RequireAuth({ loggedIn, children }: { loggedIn: boolean; children: React.ReactNode }) {
+  if (!loggedIn) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
 }
 
 function AdminOverview() {

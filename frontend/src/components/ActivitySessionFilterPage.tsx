@@ -105,7 +105,7 @@ function ActivityPage() {
       {sessions.length === 0 && !loading && <div>Inga aktiviteter för denna dag.</div>}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {sessions.map((session) => (
-          <ActivityCard key={session.sessionId} activity={session} />
+          <ActivityCard key={session.id} activity={session} />
         ))}
       </div>
     </div>
