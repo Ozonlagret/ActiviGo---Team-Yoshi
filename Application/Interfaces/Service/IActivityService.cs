@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Responses;
+﻿using Application.DTOs.Requests;
+using Application.DTOs.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace Application.Interfaces.Service
 {
     public interface IActivityService
     {
-        Task<IEnumerable<GetActivityDto>> GetAllAsync();
-        Task<GetActivityDto?> GetByIdAsync(int id);
+        Task<IEnumerable<ActivityResponse>> GetAllAsync();
+        Task<ActivityResponse?> GetByIdAsync(int id);
         Task<bool> ExistsAsync(int id);
-        Task<IEnumerable<GetActivityDto>> GetAllActiveAsync();
-        Task<IEnumerable<GetActivityDto>> GetByCategoryAsync(int categoryId);
-        Task<IEnumerable<GetActivityDto>> SearchAsync(string? category, bool? isIndoor);
+        Task<IEnumerable<ActivityResponse>> GetAllActiveAsync();
+        Task<IEnumerable<ActivityResponse>> GetByCategoryAsync(int categoryId);
+        Task<IEnumerable<ActivityResponse>> SearchAsync(string? category, bool? isIndoor);
+        Task<ActivityResponse> CreateAsync(CreateActivityRequest req, CancellationToken ct = default);
     }
 }

@@ -17,9 +17,10 @@ namespace Application.Interfaces.Repository
         Task<IEnumerable<Activity>> GetAllActiveAsync();
         Task<IEnumerable<Activity>> GetByCategoryAsync(int categoryId);
         Task<IEnumerable<Activity>> SearchAsync(string? category, bool? isIndoor);
-        Task AddAsync(Activity activity);
+        Task AddAsync(Activity activity, CancellationToken ct = default);
         void Update(Activity activity);
         Task DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
+        Task<int> SaveChangesAsync(CancellationToken ct = default);
     }
 }

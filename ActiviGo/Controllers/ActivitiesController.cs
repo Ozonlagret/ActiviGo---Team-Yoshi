@@ -16,14 +16,14 @@ namespace ActiviGo.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetActivityDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ActivityResponse>>> GetAll()
         {
             var activities = await _activityService.GetAllAsync();
             return Ok(activities);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<GetActivityDto>> GetById(int id)
+        public async Task<ActionResult<ActivityResponse>> GetById(int id)
         {
             var activity = await _activityService.GetByIdAsync(id);
             if (activity == null) return NotFound();
@@ -38,21 +38,21 @@ namespace ActiviGo.Controllers
         }
 
         [HttpGet("active")]
-        public async Task<ActionResult<IEnumerable<GetActivityDto>>> GetActive()
+        public async Task<ActionResult<IEnumerable<ActivityResponse>>> GetActive()
         {
             var activities = await _activityService.GetAllActiveAsync();
             return Ok(activities);
         }
 
         [HttpGet("category/{categoryId:int}")]
-        public async Task<ActionResult<IEnumerable<GetActivityDto>>> GetByCategory(int categoryId)
+        public async Task<ActionResult<IEnumerable<ActivityResponse>>> GetByCategory(int categoryId)
         {
             var activities = await _activityService.GetByCategoryAsync(categoryId);
             return Ok(activities);
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<GetActivityDto>>> Search([FromQuery] string? category, [FromQuery] bool? isIndoor)
+        public async Task<ActionResult<IEnumerable<ActivityResponse>>> Search([FromQuery] string? category, [FromQuery] bool? isIndoor)
         {
             var activities = await _activityService.SearchAsync(category, isIndoor);
             return Ok(activities);

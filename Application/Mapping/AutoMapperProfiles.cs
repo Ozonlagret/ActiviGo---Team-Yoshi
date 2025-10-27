@@ -13,7 +13,7 @@ namespace Application.Mapping
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Activity, GetActivityDto>()
+            CreateMap<Activity, ActivityResponse>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<ActivitySession, FilterActivitySessionResponse>()

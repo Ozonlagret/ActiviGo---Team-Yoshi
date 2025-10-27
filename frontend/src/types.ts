@@ -10,6 +10,16 @@ export type ActivitySession = {
   bookedCount?: number;
 };
 
+export type Category = {
+  id: number;
+  name: string;
+};
+
+export type Location = {
+  id: number;
+  name: string;
+};
+
 export type FilterActivitySessionResponse = {
   sessionId?: number;
   name?: string;
@@ -31,6 +41,18 @@ export type Activity = {
   location: string;
 }
 
+export type ActivityResponse = {
+  id: number;
+  name: string;
+  description: string;
+  duration: number;
+  location: string;
+  imageUrl: string;
+  price: number;
+  isActive: boolean;
+  isOutdoor?: boolean;
+};
+
 export type BookingResponse = {
   id: number;
   userId: string;
@@ -44,3 +66,23 @@ export type BookSessionRequest = {
 }
 
 type BookingStatus = "Active" | "Canceled" | "Completed";
+
+export type CreateActivityRequest = {
+  id: number;
+  name: string;
+  description: string;
+  categoryId: number;
+  standardDuration: string; // TimeSpan format: "HH:mm:ss"
+  imageUrl: string;
+  price: number;
+  isActive: boolean;
+  isOutdoor: boolean;
+}
+
+export type CreateSessionRequest = {
+  activityId: number;
+  locationId: number;
+  startUtc: string;
+  endUtc: string;
+  capacity: number;
+}

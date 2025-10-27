@@ -82,9 +82,9 @@ namespace Infrastructure.Repositories
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task AddAsync(Activity activity)
+        public async Task AddAsync(Activity activity, CancellationToken ct = default)
         {
-            await _context.Activities.AddAsync(activity);
+            await _context.Activities.AddAsync(activity, ct);
         }
 
         public void Update(Activity activity)
@@ -102,6 +102,11 @@ namespace Infrastructure.Repositories
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Activities.AsNoTracking().AnyAsync(a => a.Id == id);
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+        {
+            return await _context.SaveChangesAsync(ct);
         }
     }
 }

@@ -1,4 +1,5 @@
 import { api } from "./client";
+import type { ActivitySession } from "../types.ts";
 
 export type Activity = {
   id: number;
@@ -22,6 +23,11 @@ export type ListParams = {
 
 export async function listActivities(params: ListParams = {}) {
   const { data } = await api.get<Activity[]>("/activities", { params });
+  return data;
+}
+
+export async function fetchActivitySessions(filterParams = {}) {
+  const { data } = await api.post<ActivitySession[]>("/activitySessions/filter", filterParams);
   return data;
 }
 

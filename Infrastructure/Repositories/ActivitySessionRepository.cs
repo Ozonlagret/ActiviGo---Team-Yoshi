@@ -56,11 +56,26 @@ namespace Infrastructure.Repositories
                 .Include(s => s.Activity)
                     .ThenInclude(a => a.Category)
                 .Include(s => s.Location)
+                .Include(s => s.Bookings)
                 .Where(s => !s.IsCanceled)
                 .AsQueryable();
 
-            if (startDate.HasValue) q = q.Where(s => s.StartUtc >= startDate.Value);
-            if (endDate.HasValue) q = q.Where(s => s.EndUtc <= endDate.Value);
+            // Filter sessions that overlap with the date range
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                var endDatePlusOne = endDate.Value.AddDays(1);
+                q = q.Where(s => s.StartUtc < endDatePlusOne && s.EndUtc >= startDate.Value);
+            }
+            else if (startDate.HasValue)
+            {
+                q = q.Where(s => s.EndUtc >= startDate.Value);
+            }
+            else if (endDate.HasValue)
+            {
+                var endDatePlusOne = endDate.Value.AddDays(1);
+                q = q.Where(s => s.StartUtc < endDatePlusOne);
+            }
+
             if (categoryId.HasValue) q = q.Where(s => s.Activity.CategoryId == categoryId.Value);
             if (isIndoor.HasValue) q = q.Where(s => s.Location.IsIndoor == isIndoor.Value);
             if (locationId.HasValue) q = q.Where(s => s.LocationId == locationId.Value);

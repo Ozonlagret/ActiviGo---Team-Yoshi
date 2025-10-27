@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces.Repository;
 
 namespace Infrastructure.Repositories
 {
-    internal class CategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly ActiviGoDbContext _context;
 
@@ -20,19 +21,25 @@ namespace Infrastructure.Repositories
 
         public async Task<Category?> GetByIdAsync(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null)
+                _context.Entry(category).State = EntityState.Detached;
+            return category;
         }
 
         public async Task<Category?> GetByIdWithActivitiesAsync(int id)
         {
             return await _context.Categories
                 .Include(c => c.Activities)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task AddAsync(Category category)
@@ -40,7 +47,7 @@ namespace Infrastructure.Repositories
             await _context.Categories.AddAsync(category);
         }
 
-        public void Update(Category category)
+        public async Task UpdateAsync(Category category)
         {
             _context.Categories.Update(category);
         }
@@ -54,7 +61,14 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Categories.AnyAsync(a => a.Id == id);
+            return await _context.Categories.AsNoTracking().AnyAsync(a => a.Id == id);
+        }
+
+        public async Task<bool> HasActivitiesAsync(int id)
+        {
+            return await _context.Categories
+                .AsNoTracking()
+                .AnyAsync(c => c.Id == id && c.Activities.Any());
         }
     }
 }

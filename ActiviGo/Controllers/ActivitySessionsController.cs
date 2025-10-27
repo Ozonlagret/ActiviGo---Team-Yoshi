@@ -16,6 +16,12 @@ namespace ActiviGo.Controllers
         [HttpPost("filter")]
         public async Task<IActionResult> FilterAvailableSessions([FromBody] FilterSessionsRequest request, CancellationToken ct)
         {
+            // Convert dates to UTC for PostgreSQL
+            if (request.StartDate.HasValue)
+                request.StartDate = DateTime.SpecifyKind(request.StartDate.Value, DateTimeKind.Utc);
+            if (request.EndDate.HasValue)
+                request.EndDate = DateTime.SpecifyKind(request.EndDate.Value, DateTimeKind.Utc);
+            
             var sessions = await _activitySessionService.FilterAvailableSessionsAsync(request, ct);
             return Ok(sessions);
         }

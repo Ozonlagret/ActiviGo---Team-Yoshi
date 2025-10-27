@@ -44,12 +44,16 @@ namespace Infrastructure
             services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IIdentityAuthRepository, IdentityAuthRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
             // Services
             services.AddScoped<IActivityService, ActivityService>();
             services.AddScoped<IActivitySessionService, ActivitySessionService>();
             services.AddScoped<IBookingService, BookingService>();
-            services.AddScoped<IAuthService, AuthService>();   
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ILocationService, LocationService>();
 
             return services;
         }

@@ -80,7 +80,7 @@ namespace Application.Services
         }
 
 
-        public async Task<ActivitySessionResponse> GetByIdAsync(int id)
+        public async Task<ActivitySessionResponse?> GetByIdAsync(int id)
         {
             var activitySession = await _sessions.GetByIdAsync(id);
             return activitySession == null ? null : _mapper.Map<ActivitySessionResponse>(activitySession);

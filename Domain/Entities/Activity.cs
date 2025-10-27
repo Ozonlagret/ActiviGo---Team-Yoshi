@@ -14,10 +14,10 @@ namespace Domain.Entities
         public int CategoryId { get; set; }
         public TimeSpan StandardDuration { get; set; } 
         public decimal Price { get; set; }
-        public string? ImageUrl { get; set; }
-        public int CancellationCutoffHours { get; set; } = 24;
-        public bool IsActive { get; set; } = true;
         public bool IsOutdoor { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string? ImageUrl { get; set; }
+        public int CancellationCutoffHours { get; set; } = 24; // Default 24 hours
 
         // Navigation
         public Category Category { get; set; } = null!;
