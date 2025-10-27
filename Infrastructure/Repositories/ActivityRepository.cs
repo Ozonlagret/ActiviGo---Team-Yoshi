@@ -23,6 +23,7 @@ namespace Infrastructure.Repositories
         public async Task<Activity?> GetByIdAsync(int id)
         {
             return await _context.Activities
+                .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
@@ -31,6 +32,7 @@ namespace Infrastructure.Repositories
             return await _context.Activities
                 .Include(a => a.Category)
                 .Include(a => a.Sessions)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
@@ -39,6 +41,7 @@ namespace Infrastructure.Repositories
             return await _context.Activities
                 .Include(a => a.Category)
                 .Include(a => a.Sessions)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -48,6 +51,7 @@ namespace Infrastructure.Repositories
                 .Where(a => a.IsActive == true)
                 .Include(a => a.Category)
                 .Include(a => a.Sessions)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -57,6 +61,7 @@ namespace Infrastructure.Repositories
                 .Where(a => a.CategoryId == categoryId)
                 .Include(a => a.Category)
                 .Include(a => a.Sessions)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -74,7 +79,7 @@ namespace Infrastructure.Repositories
             if (isIndoor.HasValue)
                 query = query.Where(a => a.Sessions.Any(s => s.Location.IsIndoor == isIndoor.Value));
 
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task AddAsync(Activity activity)
@@ -96,7 +101,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Activities.AnyAsync(a => a.Id == id);
+            return await _context.Activities.AsNoTracking().AnyAsync(a => a.Id == id);
         }
     }
 }

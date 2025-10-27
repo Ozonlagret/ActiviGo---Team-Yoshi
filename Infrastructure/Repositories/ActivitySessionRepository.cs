@@ -18,13 +18,14 @@ namespace Infrastructure.Repositories
         public ActivitySessionRepository(ActiviGoDbContext db) => _db = db;
 
         public Task<ActivitySession?> GetByIdAsync(int id, CancellationToken ct = default)
-            => _db.ActivitySessions.FirstOrDefaultAsync(s => s.Id == id, ct);
+            => _db.ActivitySessions.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id, ct);
 
         public Task<ActivitySession?> GetByIdWithDetailsAsync(int id, CancellationToken ct = default)
             => _db.ActivitySessions
                   .Include(s => s.Activity)
                   .Include(s => s.Location)
                   .Include(s => s.Bookings.Where(b => b.Status == BookingStatus.Active))
+                  .AsNoTracking()
                   .FirstOrDefaultAsync(s => s.Id == id, ct);
 
         public async Task<IEnumerable<ActivitySession>> GetAllAsync(CancellationToken ct = default)
@@ -70,6 +71,7 @@ namespace Infrastructure.Repositories
         public Task<ActivitySession?> GetSessionWithBookingsAsync(int sessionId, CancellationToken ct = default)
             => _db.ActivitySessions
                   .Include(s => s.Bookings)
+                  .AsNoTracking()
                   .FirstOrDefaultAsync(s => s.Id == sessionId, ct);
 
         public async Task AddAsync(ActivitySession session, CancellationToken ct = default)

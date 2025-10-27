@@ -23,19 +23,24 @@ namespace Infrastructure.Repositories
 
         public async Task<Location?> GetByIdAsync(int id)
         {
-            return await _context.Locations.FindAsync(id);
+            var location = await _context.Locations.FindAsync(id);
+            if (location != null)
+                _context.Entry(location).State = EntityState.Detached;
+            return location;
         }
 
         public async Task<Location?> GetByIdWithSessionsAsync(int id)
         {
             return await _context.Locations
                 .Include(l => l.Sessions)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
         public async Task<IEnumerable<Location>> GetAllAsync()
         {
             return await _context.Locations
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -43,6 +48,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Locations
                 .Where(l => l.IsActive == true)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -52,12 +58,14 @@ namespace Infrastructure.Repositories
             {
                 return await _context.Locations
                     .Where(l => l.IsIndoor)
+                    .AsNoTracking()
                     .ToListAsync();
             }
             else
             {
                 return await _context.Locations
                     .Where(l => !l.IsIndoor)
+                    .AsNoTracking()
                     .ToListAsync();
             }
         }
@@ -81,7 +89,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Locations.AnyAsync(a => a.Id == id);
+            return await _context.Locations.AsNoTracking().AnyAsync(a => a.Id == id);
         }
     }
 }

@@ -17,13 +17,14 @@ namespace Infrastructure.Repositories
         public BookingRepository(ActiviGoDbContext db) => _db = db;
 
         public Task<Booking?> GetByIdAsync(int id, CancellationToken ct = default)
-            => _db.Bookings.FirstOrDefaultAsync(b => b.Id == id, ct);
+            => _db.Bookings.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id, ct);
 
         public Task<Booking?> GetByIdWithDetailsAsync(int id, CancellationToken ct = default)
             => _db.Bookings
                   .Include(b => b.ActivitySession)
                       .ThenInclude(s => s.Activity)
                   .Include(b => b.ActivitySession.Location)
+                  .AsNoTracking()
                   .FirstOrDefaultAsync(b => b.Id == id, ct);
 
         public async Task<IEnumerable<Booking>> GetByUserIdAsync(int userId, CancellationToken ct = default)
@@ -53,15 +54,17 @@ namespace Infrastructure.Repositories
 
         public Task<bool> HasOverlappingBookingAsync(int userId, DateTime startUtc, DateTime endUtc, CancellationToken ct = default)
             => _db.Bookings
+                .AsNoTracking()
                 .Where(b => b.UserId == userId && b.Status == BookingStatus.Active)
                 .Join(_db.ActivitySessions, b => b.ActivitySessionId, s => s.Id, (b, s) => s)
                 .AnyAsync(s => s.StartUtc < endUtc && startUtc < s.EndUtc, ct);
 
         public Task<int> GetActiveBookingCountForSessionAsync(int sessionId, CancellationToken ct = default)
-            => _db.Bookings.CountAsync(b => b.ActivitySessionId == sessionId && b.Status == BookingStatus.Active, ct);
+            => _db.Bookings.AsNoTracking().CountAsync(b => b.ActivitySessionId == sessionId && b.Status == BookingStatus.Active, ct);
 
         public async Task<Dictionary<int, int>> GetBookingCountByActivityAsync(DateTime startUtc, DateTime endUtc, CancellationToken ct = default)
             => await _db.Bookings
+                .AsNoTracking()
                 .Where(b => b.ActivitySession.StartUtc >= startUtc && b.ActivitySession.EndUtc <= endUtc)
                 .GroupBy(b => b.ActivitySession.ActivityId)
                 .Select(g => new { Key = g.Key, Count = g.Count() })
@@ -69,6 +72,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Dictionary<int, int>> GetBookingCountByLocationAsync(DateTime startUtc, DateTime endUtc, CancellationToken ct = default)
             => await _db.Bookings
+                .AsNoTracking()
                 .Where(b => b.ActivitySession.StartUtc >= startUtc && b.ActivitySession.EndUtc <= endUtc)
                 .GroupBy(b => b.ActivitySession.LocationId)
                 .Select(g => new { Key = g.Key, Count = g.Count() })
