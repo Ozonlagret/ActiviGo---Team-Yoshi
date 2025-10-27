@@ -41,14 +41,14 @@ namespace Infrastructure.Data
             // 3. Activities
             var activities = new[]
             {
-                new Activity { Name = "Yoga", Description = "Avslappnande yoga", CategoryId = categories[0].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 100, ImageUrl = null },
-                new Activity { Name = "Spinning", Description = "Intensiv spinning", CategoryId = categories[1].Id, StandardDuration = TimeSpan.FromMinutes(45), Price = 120, ImageUrl = null },
-                new Activity { Name = "Crossfit", Description = "Styrka och kondition", CategoryId = categories[2].Id, StandardDuration = TimeSpan.FromMinutes(50), Price = 150, ImageUrl = null },
-                new Activity { Name = "Pilates", Description = "Kroppskontroll och styrka", CategoryId = categories[0].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 110, ImageUrl = null },
-                new Activity { Name = "Löpning", Description = "Löpning i parken", CategoryId = categories[3].Id, StandardDuration = TimeSpan.FromMinutes(40), Price = 80, ImageUrl = null },
-                new Activity { Name = "Zumba", Description = "Dans och träning", CategoryId = categories[4].Id, StandardDuration = TimeSpan.FromMinutes(55), Price = 100, ImageUrl = null },
-                new Activity { Name = "Badminton", Description = "Racketsport", CategoryId = categories[5].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 90, ImageUrl = null },
-                new Activity { Name = "Basket", Description = "Lagspel", CategoryId = categories[6].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 95, ImageUrl = null }
+                new Activity { Name = "Yoga", Description = "Avslappnande yoga", CategoryId = categories[0].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 100, ImageUrl = "https://files.nccih.nih.gov/yoga-gettyimages-1204500395-16-9.jpg" },
+                new Activity { Name = "Spinning", Description = "Intensiv spinning", CategoryId = categories[1].Id, StandardDuration = TimeSpan.FromMinutes(45), Price = 120, ImageUrl = "https://zycle.eu/imagenes/Indoor-cycle-vs-spinning-cual-es-la-diferencia.jpg" },
+                new Activity { Name = "Crossfit", Description = "Styrka och kondition", CategoryId = categories[2].Id, StandardDuration = TimeSpan.FromMinutes(50), Price = 150, ImageUrl = "https://cdn.prod.website-files.com/60b5161b14fe760d9b751c45/65a4cdba170deb8195cb62bb_arnold%20cover%201.webp" },
+                new Activity { Name = "Pilates", Description = "Kroppskontroll och styrka", CategoryId = categories[0].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 110, ImageUrl = "https://hips.hearstapps.com/hmg-prod/images/outdoor-pull-ups-royalty-free-image-1681208481.jpg" },
+                new Activity { Name = "Löpning", Description = "Löpning i parken", CategoryId = categories[3].Id, StandardDuration = TimeSpan.FromMinutes(40), Price = 80, ImageUrl = "https://st3.depositphotos.com/1177973/17793/i/450/depositphotos_177932108-stock-photo-group-of-young-people-running.jpg" },
+                new Activity { Name = "Zumba", Description = "Dans och träning", CategoryId = categories[4].Id, StandardDuration = TimeSpan.FromMinutes(55), Price = 100, ImageUrl = "https://sas.rochester.edu/dan/assets/images/slider/step_show_063-l.jpg" },
+                new Activity { Name = "Badminton", Description = "Racketsport", CategoryId = categories[5].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 90, ImageUrl = "https://racketnow.com/cdn/shop/collections/CEQxxXK.jpg?v=1727252997&width=2400" },
+                new Activity { Name = "Basket", Description = "Lagspel", CategoryId = categories[6].Id, StandardDuration = TimeSpan.FromMinutes(60), Price = 95, ImageUrl = "https://cdn.nba.com/manage/2025/10/BOS_DET_1920x1080.jpg" }
             };
             context.Activities.AddRange(activities);
             await context.SaveChangesAsync();

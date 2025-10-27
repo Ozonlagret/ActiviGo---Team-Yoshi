@@ -28,35 +28,31 @@ export default function App() {
     <BrowserRouter>
       <div>
         {/* Navbar */}
-        <nav style={{ 
-          display: "flex", 
-          justifyContent: "space-between", 
-          alignItems: "center",
-          padding: "1rem 2rem",
-          borderBottom: "1px solid #ccc"
-        }}>
-          <div style={{ display: "flex", gap: "2rem" }}>
-            <Link to="/">Hem</Link>
-            <Link to="/activities">Aktiviteter</Link>
-            {isAdmin && <Link to="/admin">Admin</Link>}
-            {auth.loggedIn && <Link to="/bookings">Mina bokningar</Link>}
-          </div>
+        <nav className="navbar">
+          <div className="container navbar-inner">
+            <div className="nav-links">
+              <Link className="brand" to="/">ActiviGo</Link>
+              <Link to="/activities">Aktiviteter</Link>
+              {isAdmin && <Link to="/admin">Admin</Link>}
+              {auth.loggedIn && <Link to="/bookings">Mina bokningar</Link>}
+            </div>
 
-          {/* Right-aligned auth actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            {auth.loggedIn && auth.name && (
-              <span style={{ color: "#444" }}>Hej, {auth.name}</span>
-            )}
-            {auth.loggedIn ? (
-              <LogoutButton />
-            ) : (
-              <Link to="/auth">Logga in / Registrera</Link>
-            )}
+            {/* Right-aligned auth actions */}
+            <div className="nav-right">
+              {auth.loggedIn && auth.name && (
+                <span className="muted">Hej, {auth.name}</span>
+              )}
+              {auth.loggedIn ? (
+                <LogoutButton />
+              ) : (
+                <Link to="/auth">Logga in / Registrera</Link>
+              )}
+            </div>
           </div>
         </nav>
 
         {/* Main Content */}
-        <main style={{ padding: "2rem" }}>
+        <main className="container main">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/activities" element={<ActivitiesPage />} />
@@ -109,7 +105,7 @@ function LogoutButton() {
   return (
     <button
       onClick={() => { logout(); nav("/", { replace: true }); }}
-      style={{ background: "transparent", border: "1px solid #aaa", padding: "6px 12px", borderRadius: 6, cursor: "pointer" }}
+      className="btn btn-outline"
     >Logga ut</button>
   );
 }
@@ -136,3 +132,9 @@ function AdminCreate() {
 function AdminManage() {
   return <div><h2>Redigera/Ta bort</h2><p>Hantera befintliga entiteter här...</p></div>;
 }
+
+      <nav className="row" style={{ marginBottom: "2rem", borderBottom: "1px solid #e2e4e8", paddingBottom: "0.5rem" }}>
+        <Link to="/admin/overview">Översikt</Link>
+        <Link to="/admin/create">Lägg till</Link>
+        <Link to="/admin/manage">Redigera/Ta bort</Link>
+      </nav>

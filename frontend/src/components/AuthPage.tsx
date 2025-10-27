@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 export default function AuthPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
   return (
-    <div style={{ maxWidth: 460, margin: "0 auto" }}>
+    <div className="container" style={{ maxWidth: 560 }}>
       <h1 style={{ marginBottom: 16 }}>{mode === "login" ? "Logga in" : "Skapa konto"}</h1>
 
-      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
+      <div className="row" style={{ marginBottom: 24 }}>
         <button
           onClick={() => setMode("login")}
-          style={{ padding: "6px 12px", background: mode === "login" ? "#222" : "#eee", color: mode === "login" ? "#fff" : "#222", border: "1px solid #aaa", borderRadius: 6 }}
+          className={`btn btn-toggle ${mode === "login" ? "is-active" : ""}`}
         >Logga in</button>
         <button
           onClick={() => setMode("register")}
-          style={{ padding: "6px 12px", background: mode === "register" ? "#222" : "#eee", color: mode === "register" ? "#fff" : "#222", border: "1px solid #aaa", borderRadius: 6 }}
+          className={`btn btn-toggle ${mode === "register" ? "is-active" : ""}`}
         >Registrera</button>
       </div>
 
@@ -46,18 +46,18 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-      <label>
+    <form onSubmit={onSubmit} className="form">
+      <label className="label">
         E-post
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </label>
-      <label>
+      <label className="label">
         Lösenord
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={inputStyle} />
+        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </label>
-      {error && <div style={{ color: "#b00020" }}>{error}</div>}
-      <button type="submit" disabled={loading} style={primaryBtnStyle}>{loading ? "Loggar in..." : "Logga in"}</button>
-      <button type="button" onClick={onSwitch} style={linkBtnStyle}>Har du inget konto? Registrera dig</button>
+      {error && <div className="error">{error}</div>}
+      <button type="submit" disabled={loading} className="btn btn-primary">{loading ? "Loggar in..." : "Logga in"}</button>
+      <button type="button" onClick={onSwitch} className="btn btn-link">Har du inget konto? Registrera dig</button>
     </form>
   );
 }
@@ -89,52 +89,27 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-      <label>
+    <form onSubmit={onSubmit} className="form">
+      <label className="label">
         Förnamn
-        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} style={inputStyle} />
+        <input className="input" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
       </label>
-      <label>
+      <label className="label">
         Efternamn
-        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} style={inputStyle} />
+        <input className="input" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
       </label>
-      <label>
+      <label className="label">
         E-post
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </label>
-      <label>
+      <label className="label">
         Lösenord
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={inputStyle} />
+        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </label>
-      {error && <div style={{ color: "#b00020" }}>{error}</div>}
-      <button type="submit" disabled={loading} style={primaryBtnStyle}>{loading ? "Skapar konto..." : "Registrera"}</button>
-      <button type="button" onClick={onSwitch} style={linkBtnStyle}>Har du redan konto? Logga in</button>
+      {error && <div className="error">{error}</div>}
+      <button type="submit" disabled={loading} className="btn btn-primary">{loading ? "Skapar konto..." : "Registrera"}</button>
+      <button type="button" onClick={onSwitch} className="btn btn-link">Har du redan konto? Logga in</button>
     </form>
   );
 }
 
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "8px 10px",
-  borderRadius: 6,
-  border: "1px solid #ccc",
-  marginTop: 4,
-};
-
-const primaryBtnStyle: React.CSSProperties = {
-  padding: "10px 14px",
-  background: "#1a73e8",
-  color: "white",
-  border: "none",
-  borderRadius: 6,
-  cursor: "pointer",
-};
-
-const linkBtnStyle: React.CSSProperties = {
-  padding: 0,
-  border: "none",
-  background: "transparent",
-  color: "#1a73e8",
-  textAlign: "left",
-  cursor: "pointer",
-};
