@@ -14,7 +14,7 @@ namespace Domain.Entities
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public bool IsIndoor { get; set; }
-        public int Capacity { get; set; }       // total spots
+        public int Capacity { get; set; }   // platser
         public bool IsActive { get; set; }
 
         public ICollection<ActivitySession> Sessions { get; set; } = new List<ActivitySession>();

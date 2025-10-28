@@ -13,10 +13,9 @@ namespace Domain.Entities
         public int LocationId { get; set; }
         public DateTime StartUtc { get; set; }
         public DateTime EndUtc { get; set; }
-        public int Capacity { get; set; }         // spots for this occurrence
+        public int Capacity { get; set; }         
         public bool IsCanceled { get; set; } = false;
 
-        // Navigation
         public Activity Activity { get; set; } = null!;
         public Location Location { get; set; } = null!;
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();

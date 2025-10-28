@@ -50,7 +50,8 @@ namespace ActiviGo
                          "https://localhost:5174"
                      ) // Vite dev (http/https on 5173/5174)
                      .AllowAnyHeader()
-                     .AllowAnyMethod());
+                     .AllowAnyMethod()
+                     .AllowCredentials());
             });
 
             // JWT Bearer 

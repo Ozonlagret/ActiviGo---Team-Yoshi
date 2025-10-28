@@ -17,7 +17,6 @@ namespace Domain.Entities
         public DateTime BookingTimeUtc { get; set; } = DateTime.UtcNow;
         public BookingStatus Status { get; set; } = BookingStatus.Active;
 
-        // Navigation
         public ActivitySession ActivitySession { get; set; } = null!;
     }
 }
