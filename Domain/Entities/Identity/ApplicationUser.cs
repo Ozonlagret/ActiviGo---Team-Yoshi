@@ -15,5 +15,6 @@ namespace Domain.Entities
         public bool IsActive { get; set; } = true;
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public ICollection<HealthLog> HealthLogs { get; set; } = new List<HealthLog>();
     }
 }

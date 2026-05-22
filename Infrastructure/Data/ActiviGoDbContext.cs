@@ -21,6 +21,7 @@ namespace Infrastructure.Data
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<ActivitySession> ActivitySessions => Set<ActivitySession>();
         public DbSet<Booking> Bookings => Set<Booking>();
+        public DbSet<HealthLog> HealthLogs => Set<HealthLog>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +61,16 @@ namespace Infrastructure.Data
                 .WithMany(u => u.Bookings)       // collection på ApplicationUser, finns i Infrastructure
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HealthLog>()
+                .HasOne(x => x.User)
+                .WithMany(u => u.HealthLogs)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<HealthLog>()
+                .HasIndex(x => new { x.UserId, x.LogDate })
+                .IsUnique();
         }
     }
 }

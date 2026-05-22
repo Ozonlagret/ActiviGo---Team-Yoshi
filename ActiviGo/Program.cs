@@ -114,8 +114,8 @@ namespace ActiviGo
                     var userManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<Domain.Entities.ApplicationUser>>();
                     var roleManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole<int>>>();
 
-                    // Ensure database is created
-                    context.Database.EnsureCreated();
+                    // Apply pending migrations so new tables are created in existing dev databases
+                    context.Database.Migrate();
 
                     // Check if already seeded (e.g., if Categories exist)
                     if (!context.Categories.Any())

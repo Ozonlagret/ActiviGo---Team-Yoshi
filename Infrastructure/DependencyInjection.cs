@@ -46,6 +46,7 @@ namespace Infrastructure
             services.AddScoped<IIdentityAuthRepository, IdentityAuthRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IHealthTrackerRepository, HealthTrackerRepository>();
 
             // Services
             services.AddScoped<IActivityService, ActivityService>();
@@ -54,6 +55,7 @@ namespace Infrastructure
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<IHealthTrackerService, HealthTrackerService>();
 
             return services;
         }
