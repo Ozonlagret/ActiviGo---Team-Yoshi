@@ -69,6 +69,16 @@ namespace Application.Services
                 ? null
                 : new HealthProfileResponse(latest.WeightKg, latest.HeightCm, latest.LogDate, latest.UpdatedAtUtc);
         }
+        public async Task<HealthStatsResponse> GetStatsAsync(int userId, CancellationToken ct = default)
+        {
+            var entries = await _repository.GetByUserAsync(userId, ct);
+            var totalEntries = entries.Count();
+            var totalSteps = entries.Sum(x => x.Steps ?? 0);
+            var totalCalories = entries.Sum(x => x.Calories ?? 0);
+            var averageWeightKg = entries.Where(x => x.WeightKg != null).Average(x => x.WeightKg);
+
+            return new HealthStatsResponse(totalEntries, totalSteps, totalCalories, averageWeightKg);
+        }
 
         private static HealthLogResponse Map(HealthLog log) => new(
             log.Id,

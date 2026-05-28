@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ActivitySessionFilterPage from "./components/ActivitySessionFilterPage.tsx";
 import CreateEntity from "./components/admin/CreateEntity.tsx";
 import AuthPage from "./components/AuthPage.tsx";
+import HealthTrackerPage from "./components/HealthTrackerPage.tsx";
 import { getAuthInfo, logout } from "./api/auth.ts";
 import MyBookings from "./components/MyBookings.tsx";
 
@@ -33,6 +34,7 @@ export default function App() {
             <div className="nav-links">
               <Link className="brand" to="/">ActiviGo</Link>
               <Link to="/activities">Aktiviteter</Link>
+              {auth.loggedIn && <Link to="/health-tracker">Health tracker</Link>}
               {isAdmin && <Link to="/admin">Admin</Link>}
               {auth.loggedIn && <Link to="/bookings">Mina bokningar</Link>}
             </div>
@@ -56,6 +58,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/activities" element={<ActivitiesPage />} />
+            <Route path="/health-tracker" element={<RequireAuth loggedIn={auth.loggedIn}><HealthTrackerPage /></RequireAuth>} />
             <Route path="/admin/*" element={<RequireAdmin isAdmin={isAdmin}><AdminPage /></RequireAdmin>} />
             <Route path="/bookings" element={<RequireAuth loggedIn={auth.loggedIn}><MyBookings /></RequireAuth>} />
             <Route path="/auth" element={<AuthPage />} />
