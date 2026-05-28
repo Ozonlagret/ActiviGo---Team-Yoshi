@@ -55,5 +55,15 @@ namespace ActiviGo.Controllers
             var sub = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue(ClaimTypes.Name);
             return int.TryParse(sub, out var id) ? id : 0;
         }
+
+        [HttpGet("stats")]
+        public async Task<IActionResult> GetStats(CancellationToken ct)
+        {
+            var userId = GetUserId();
+            if (userId <= 0) return Unauthorized();
+
+            var stats = await _service.GetStatsAsync(userId, ct);
+            return Ok(stats);
+        }
     }
 }

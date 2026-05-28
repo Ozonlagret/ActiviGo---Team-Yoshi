@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getHealthLogs, getHealthProfile, saveHealthLog, type HealthLogResponse, type HealthProfileResponse } from "../api/healthTracker";
+import { getHealthLogs, getHealthProfile, getHealthStats, saveHealthLog, type HealthLogResponse, type HealthProfileResponse, type HealthStatsResponse } from "../api/healthTracker";
 
 function todayValue() {
   return new Date().toISOString().slice(0, 10);
@@ -15,6 +15,7 @@ export default function HealthTrackerPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<HealthProfileResponse | null>(null);
+  const [stats, setStats] = useState<HealthStatsResponse | null>(null);
   const [logs, setLogs] = useState<HealthLogResponse[]>([]);
 
   useEffect(() => {
@@ -23,10 +24,11 @@ export default function HealthTrackerPage() {
 
   async function loadData() {
     try {
-      const [profileData, logData] = await Promise.allSettled([getHealthProfile(), getHealthLogs()]);
+      const [profileData, logData, statsData] = await Promise.allSettled([getHealthProfile(), getHealthLogs(), getHealthStats()]);
 
       if (profileData.status === "fulfilled") setProfile(profileData.value);
       if (logData.status === "fulfilled") setLogs(logData.value);
+      if (statsData.status === "fulfilled") setStats(statsData.value);
     } catch {
       // Intentionally silent for the first basic version.
     }
@@ -99,6 +101,12 @@ export default function HealthTrackerPage() {
             <div>Vikt: {profile.weightKg ?? "-"} kg</div>
             <div>Längd: {profile.heightCm ?? "-"} cm</div>
             <div>Senast uppdaterad: {profile.updatedAtUtc ? new Date(profile.updatedAtUtc).toLocaleString("sv-SE") : "-"}</div>
+            <br />
+              <h3>Statistik:</h3>
+            <div>Totala loggar: {stats?.totalEntries ?? "-"} st.</div>
+            <div>Totala steg: {stats?.totalSteps ?? "-"} steg</div>
+            <div>Totala kalorier: {stats?.totalCalories ?? "-"} kcal</div>
+            <div>Genomsnittlig vikt: {stats?.averageWeightKg ?? "-"} kg</div>
           </div>
         ) : (
           <div className="muted">Ingen profilhistorik ännu.</div>

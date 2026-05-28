@@ -26,6 +26,13 @@ export type HealthProfileResponse = {
   updatedAtUtc?: string | null;
 };
 
+export type HealthStatsResponse = {
+  totalEntries: number;
+  totalSteps: number;
+  totalCalories: number;
+  averageWeightKg?: number | null;
+};
+
 export async function saveHealthLog(req: SaveHealthLogRequest) {
   const { data } = await api.post<HealthLogResponse>("/api/health-tracker/logs", req);
   return data;
@@ -38,5 +45,10 @@ export async function getHealthLogs() {
 
 export async function getHealthProfile() {
   const { data } = await api.get<HealthProfileResponse>("/api/health-tracker/profile");
+  return data;
+}
+
+export async function getHealthStats() {
+  const { data } = await api.get<HealthStatsResponse>("/api/health-tracker/stats");
   return data;
 }
